@@ -26,8 +26,6 @@ import LinkSchedule from './components/LinkSchedule'
 import MenuSchedule from './components/MenuSchedule'
 import MainSchedule from './components/MainSchedule'
 
-
-
 export default {
     name: 'app',
     props:[
