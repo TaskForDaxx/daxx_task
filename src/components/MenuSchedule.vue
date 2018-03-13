@@ -6,7 +6,7 @@
             <span class="glyphicon glyphicon-th-list spanTitleMarLeft"></span>
         </div>
         <div>
-            {{imageLog}}
+            <img src='../assets/logo.png'/>
         </div>
         <div class="descreprion">
             <div class="descrDiv">
@@ -44,8 +44,9 @@
 
 <style scoped>
     .MenuSchedule{
+        height: calc(100vh - 80px);
+        min-height: 410px;
         width: 20%;
-        height: 100vh;
         background: #fff;
         box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
     }
@@ -75,5 +76,9 @@
     }
     .descrDiv{
         margin-bottom: 5px;
+    }
+    img{
+        width: 240px;
+        height: 240px;
     }
 </style>
