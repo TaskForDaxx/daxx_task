@@ -1,96 +1,75 @@
 <template>
     <div class="MainNavigation">
-        <div class="echarts">
-            <IEcharts
-                    :option="bar"
-                    :loading="loading"
-            />
-        </div>
-        <button @click="loadInfo">Add Date</button>
-        {{loadData}}
+        <canvas id="densityChart" width="600" height="400"></canvas>
+        {{data}}
     </div>
 </template>
 
 <script>
-    import IEcharts from 'vue-echarts-v3/src/full.js';
 
+    import Chart from "echarts"
     export default {
         name: "main-schedule",
-        components: {
-            IEcharts
-        },
         props:[
-        ],
-        data: () => ({
-            loading: false,
-            bar: {
-                title: {
-                    text: 'OPEN'
-                },
-                tooltip: {},
-                xAxis: {
-                    data: ''
-                },
-                yAxis: {},
-                series: {
-                    name: 'Some',
-                    type: 'bar',
-                    data: [5, 20, 69, 10, 10, 20]
-                },
-                loadData:''
-            }
+            'data'
+        ]
+    }
 
-        }),
-        methods: {
-            doRandom() {
-                const that = this;
-                let data = [];
-                for (let i = 0, min = 5, max = 99; i < 6; i++) {
-                    data.push(Math.floor(Math.random() * (max + 1 - min) + min));
+    var popCanvas = document.getElementById("popChart");
+
+    Chart.defaults.global.defaultFontFamily = "Lato";
+    Chart.defaults.global.defaultFontSize = 18;
+    Chart.defaults.global.defaultFontColor = 'blue';
+
+    var barChart = new Chart(popCanvas, {
+        type: 'bar',
+        data: {
+            labels: ["China", "India", "United States", "Indonesia", "Brazil", "Pakistan", "Nigeria", "Bangladesh", "Russia", "Japan"],
+            datasets: [{
+                label: 'Population',
+                data: [1379302771, 1281935911, 326625791, 260580739, 207353391, 204924861, 190632261, 157826578, 142257519, 126451398],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.6)',
+                    'rgba(54, 162, 235, 0.6)',
+                    'rgba(255, 206, 86, 0.6)',
+                    'rgba(75, 192, 192, 0.6)',
+                    'rgba(153, 102, 255, 0.6)',
+                    'rgba(255, 159, 64, 0.6)',
+                    'rgba(255, 99, 132, 0.6)',
+                    'rgba(54, 162, 235, 0.6)',
+                    'rgba(255, 206, 86, 0.6)',
+                    'rgba(75, 192, 192, 0.6)',
+                    'rgba(153, 102, 255, 0.6)'
+                ]
+            }]
+        },
+        options: {
+            legend: {
+                display: true,
+                position: 'bottom',
+                labels: {
+                    boxWidth: 80,
+                    fontColor: 'rgb(60, 180, 100)'
                 }
-                that.loading = !that.loading;
-                that.bar.series[0].data = data;
             },
-            loadInfo() {
-                let xhr = new XMLHttpRequest();
-                xhr.open('GET', 'http://wb-predictivemaintenance-api.prsp7vkew2.eu-central-1.elasticbeanstalk.com/api/TorqueValues', false);
-                xhr.send();
-                if (xhr.status !== 200) {
-                    alert('Ошибка ' + xhr.status + ': ' + xhr.statusText);
-                } else {
-                    let data = xhr.responseText;
-                    let newData  = JSON.parse(data);
-                    let dataOpen = newData.map(function(name) {
-                        if (name.Direction === "Open") {
-                            return name
-                        }
-                    });
-
-                    this.loadData = dataOpen;
-                    console.log(this.loadData);
-                    alert("Данный Open загруженны");
-
-                    this.series.data = this.series.data.push(
-                        this.loadData.map(function (item) {
-                            alert(item.Position);
-                            return item.Position
-                        }))
-                }
+            tooltips: {
+                cornerRadius: 0,
+                caretSize: 0,
+                xPadding: 16,
+                yPadding: 10,
+                backgroundColor: 'rgba(0, 150, 100, 0.9)',
+                titleFontStyle: 'normal',
+                titleMarginBottom: 15
             }
         }
-    };
+    });
 
 </script>
 
 <style scoped>
     .MainNavigation{
-        display: inline-block;
-        width: 97%;
         background: #fff;
         box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
     }
-    .echarts {
-        width: 400px;
-        height: 400px;
-    }
+
 </style>
